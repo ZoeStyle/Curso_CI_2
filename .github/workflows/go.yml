@@ -12,5 +12,6 @@ jobs:
     uses: ./.github/workflows/Quality.yml
 
   docker:
+    needs: quality
     uses: ./.github/workflows/Docker.yml
   
