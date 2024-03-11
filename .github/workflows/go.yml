@@ -8,37 +8,9 @@ on:
 
 jobs:
 
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        go_version: ['1.18', '1.17', '>=1.18']
-        os: ['ubuntu-latest']
-    steps:
-    - uses: actions/checkout@v3
+  quality:
+    uses: ./.github/workflows/Quality.yml
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ${{ matrix.go_version }}
-      
-    - name: Build-DB
-      run: docker-compose build
-      
-    - name: Create-DB
-      run: docker-compose up -d
-
-    - name: Test
-      run: go test -v main_test.go 
-      
+  docker:
+    uses: ./.github/workflows/Docker.yml
   
-  build:
-    needs: test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: ['ubuntu-latest']
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: go build -v main.go
